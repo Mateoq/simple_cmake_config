@@ -23,8 +23,22 @@ if (NOT CONFIGURED_ONCE)
 endif()
 
 # The following folder will be included
-include_directories("${PROJECT_SOURCE_DIR}")
+include_directories("${CMAKE_SOURCE_DIR}")
+include_directories("include")
 
-add_executable(Todos ${PROJECT_SOURCE_DIR}/main.cpp
-  ${PROJECT_SOURCE_DIR}/todos.cpp)
+# Add a sub dir which includes a library
+add_subdirectory("${CMAKE_SOURCE_DIR}/lib/glfw")
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_executable(Todos
+  ${PROJECT_SOURCE_DIR}/main.cpp
+  ${PROJECT_SOURCE_DIR}/todos.cpp
+  ${PROJECT_SOURCE_DIR}/glad.cpp
+)
+
+# Link a library
+target_link_libraries(Todos glfw)
 
